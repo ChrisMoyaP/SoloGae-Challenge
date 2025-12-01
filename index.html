@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>SoloGae Challenge</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #eee; padding: 20px; }
+    h2 { margin-bottom: 10px; }
+    input { padding: 8px; width: 260px; margin-right: 10px; }
+    button { padding: 8px 14px; cursor: pointer; }
+    .card {
+      background: #222; padding: 20px; margin-top: 20px;
+      border-radius: 8px; width: 300px;
+    }
+    table { margin-top: 30px; border-collapse: collapse; width: 100%; max-width: 800px; }
+    th, td { border: 1px solid #444; padding: 6px 10px; text-align: center; }
+    th { background: #222; }
+    tr:nth-child(even) { background: #1a1a1a; }
+
+    .container {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* COLUMNA IZQUIERDA */
+    .left {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;      /* Centra horizontal */
+      justify-content: flex-start; /* Puedes poner center si quieres TODO centrado */
+      border-right: 2px solid #004400; /* opcional, línea verde */
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .top-right-btn {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;   /* mueve el botón a la derecha */
+      margin-bottom: 10px;         /* separación hacia abajo */
+    }
+
+    /* COLUMNA DERECHA */
+    .right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  /* Cubre todo, recortando si es necesario */
+    }
+
+    /* Imagen centrada */
+    .center-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    
+    }
+
+    .left-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centrado horizontal */
+      margin-top: 20px;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    #reload-btn {
+        position: absolute;
+        right: 20px;  /* lo mueve a la derecha */
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 8px 14px;
+        background: #222;
+        color: #eee;
+        border: 1px solid #555;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    #reload-btn:hover {
+        background: #333;
+    }
+
+    .logo-img {
+      max-width: 260px;
+      margin: 0 auto 20px auto;
+      display: block;
+    }
+
+    .countdown {
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+      color: #ffdf6b;
+    }
+
+    #tabla-participantes {
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 800px;
+      margin-top: 10px;
+    }
+
+    #tabla-participantes th, 
+    #tabla-participantes td {
+      border: 1px solid #444;
+      padding: 6px 10px;
+      text-align: center;
+    }
+
+    #tabla-participantes th {
+      background: #222;
+    }
+
+    .header-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* imagen centrada */
+    align-items: center;
+    margin-bottom: 20px;
+    }
+
+    .center-img {
+        width: 300px;   /* Ajusta según tu imagen */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+  <div class="left">
+    <div class="header-wrapper">
+        <img src="GaePicaro.png" class="center-img">
+
+        <button id="reload-btn" onclick="cargarParticipantes()">
+            🔄 Recargar tabla
+        </button>
+    </div>
+
+    <table id="tabla-participantes">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Riot ID</th>
+          <th>Tier</th>
+          <th>LP</th>
+          <th>W/L</th>
+          <th>Winrate</th>
+          <th>Twitch</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+     <div id="countdown" class="countdown"></div>
+
+  </div>
+
+  <div class="right">
+    <img src="GaeBienvenida.jpg" class="center-img">
+  </div>
+</div>
+
+  
+
+  <script>
+    const TWITCH_CLIENT_ID = "ezna13q8dt7btset40ah6gytp5648f";
+    const TWITCH_CLIENT_SECRET = "kq8vgrw24mtc5r32otasy8brd14wxw";
+    let TWITCH_TOKEN = "";
+    const API_URL = "https://script.google.com/macros/s/AKfycby1vrYLmaaeFJFMfv7jbEg1cyaaA9woExy-dHnk5ACf-w3nGCde9TaPKQy9q1cyQ7PeLg/exec";
+
+    // 👉 Mete aquí tu lista de participantes
+    const PARTICIPANTS = [
+      { gameName: "DFM Moya",        tagLine: "DFM"    , twitch: "moya31"},
+      { gameName: "Pktenojay",       tagLine: "LAS"    , twitch: "shaka31tv"},
+      { gameName: "Roku Roku",       tagLine: "Deuss"  , twitch: ""},      // Kenpaxhi
+      { gameName: "ClaudioTrol",     tagLine: "MEE"    , twitch: ""},      // Nikolito
+      { gameName: "Scout",           tagLine: "Night"  , twitch: ""},      // Claudio
+      { gameName: "Son Jorge",       tagLine: "Miau"   , twitch: ""},      // Jorgito
+      { gameName: "Tr4v4 Enj0y3r",   tagLine: "Meex"   , twitch: ""},      // Meex
+      { gameName: "Kz42",            tagLine: "LAS"    , twitch: "imnotgaebolg"},      // Gae
+      { gameName: "Vegeta Daima",    tagLine: "miau"   , twitch: ""},       // Flipi
+      { gameName: "Kurisü",          tagLine: "LAS"    , twitch: ""},      // Flipi
+      { gameName: "xAdolin Kholin",  tagLine: "LAS"    , twitch: ""}       // Flipi
+    ];
+
+    // Fechas del torneo (hora Chile: -03:00)
+    const EVENT_START = new Date("2025-12-01T21:00:00-03:00");
+    const EVENT_END   = new Date("2025-12-31T23:59:59-03:00");
+
+    function formatTimeDiff(ms) {
+      if (ms < 0) ms = 0;
+      const totalSeconds = Math.floor(ms / 1000);
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      const pad = n => String(n).padStart(2, "0");
+      return `${days}d ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const el = document.getElementById("countdown");
+      if (!el) return;
+
+      if (now < EVENT_START) {
+        const diff = EVENT_START - now;
+        el.textContent = "El torneo comienza en: " + formatTimeDiff(diff);
+      } else if (now <= EVENT_END) {
+        const diff = EVENT_END - now;
+        el.textContent = "El torneo termina en: " + formatTimeDiff(diff);
+      } else {
+        el.textContent = "El torneo ha finalizado";
+      }
+    }
+
+    function buscar() {
+      const riotId = document.getElementById("riotId").value.trim();
+      if (!riotId.includes("#")) {
+        alert("Formato incorrecto. Usa Nombre#TAG (ej: DFM Moya#DFM)");
+        return;
+      }
+
+      const [gameName, tagLine] = riotId.split("#");
+
+      fetch(`${API_URL}?gameName=${encodeURIComponent(gameName)}&tagLine=${encodeURIComponent(tagLine)}`)
+        .then(res => res.json())
+        .then(mostrarResultadoIndividual)
+        .catch(err => {
+          console.error(err);
+          document.getElementById("resultado").innerHTML = "<p>Error al consultar.</p>";
+        });
+    }
+
+    function mostrarResultadoIndividual(data) {
+      if (data.error || data.status) {
+        document.getElementById("resultado").innerHTML = "<p>Error: No encontrado o sin rank.</p>";
+        return;
+      }
+
+      const solo = data.soloQ;
+      const html = `
+        <div class="card">
+          <h3>${data.riotId}</h3>
+          ${solo ? `
+            <p><b>Tier:</b> ${solo.tier} ${solo.rank}</p>
+            <p><b>LP:</b> ${solo.lp}</p>
+            <p><b>W/L:</b> ${solo.wins}/${solo.losses}</p>
+            <p><b>Winrate:</b> ${calcWinrate(solo.wins, solo.losses)}%</p>
+          ` : "<p>Sin SoloQ rankeado</p>"}
+        </div>
+      `;
+      document.getElementById("resultado").innerHTML = html;
+    }
+
+    function calcWinrate(w, l) {
+      const total = w + l;
+      if (!total) return 0;
+      return Math.round((w / total) * 100);
+    }
+
+
+    const TIER_ORDER = {
+      "CHALLENGER": 9,
+      "GRANDMASTER": 8,
+      "MASTER": 7,
+      "DIAMOND": 6,
+      "EMERALD": 5,
+      "PLATINUM": 4,
+      "GOLD": 3,
+      "SILVER": 2,
+      "BRONZE": 1,
+      "IRON": 0
+    };
+
+    async function estadoTwitch(usuario) {
+      // Si no hay usuario, lo tratamos como "no tiene twitch" / offline
+      if (!usuario || usuario.trim() === "") {
+        return false;
+      }
+
+      try {
+        if (!TWITCH_TOKEN) {
+          await obtenerTwitchToken();
+        }
+
+        const res = await fetch(`https://api.twitch.tv/helix/streams?user_login=${encodeURIComponent(usuario)}`, {
+          headers: {
+            "Client-ID": TWITCH_CLIENT_ID,
+            "Authorization": `Bearer ${TWITCH_TOKEN}`
+          }
+        });
+
+        if (!res.ok) {
+          console.warn("Error en la API de Twitch:", res.status, await res.text());
+          return false; // lo tratamos como offline para no romper nada
+        }
+
+        const data = await res.json();
+
+        // data o data.data pueden venir undefined si hubo un error
+        const streams = Array.isArray(data.data) ? data.data : [];
+
+        return streams.length > 0; // true = online
+
+      } catch (err) {
+        console.error("Error en estadoTwitch:", err);
+        return false; // si algo falla, devolvemos offline
+      }
+    }
+
+    async function cargarParticipantes() {
+      const tbody = document.querySelector("#tabla-participantes tbody");
+      tbody.innerHTML = "";
+
+      // 1) SKELETON: mostramos la tabla de inmediato con filas "cargando..."
+      PARTICIPANTS.forEach((p, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${p.gameName}#${p.tagLine}</td>
+          <td colspan="5" style="opacity:0.6;">Cargando...</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      try {
+        // 2) Pedimos TODO en paralelo (como antes)
+        const promesas = PARTICIPANTS.map(p =>
+          fetch(`${API_URL}?gameName=${encodeURIComponent(p.gameName)}&tagLine=${encodeURIComponent(p.tagLine)}`)
+            .then(r => r.json())
+            .then(data => ({ base: p, data }))
+        );
+
+        const resultados = await Promise.all(promesas);
+
+        // 3) Ordenamos por TIER y luego por división (I, II, III, IV)
+        resultados.sort((a, b) => {
+          const A = a.data.soloQ;
+          const B = b.data.soloQ;
+
+          // Sin SoloQ al final
+          if (!A && !B) return 0;
+          if (!A) return 1;
+          if (!B) return -1;
+
+          const tierA = TIER_ORDER[A.tier] ?? -1;
+          const tierB = TIER_ORDER[B.tier] ?? -1;
+          if (tierA !== tierB) return tierB - tierA;
+
+          const rankToNum = r => ({ I:1, II:2, III:3, IV:4 }[r] ?? 99);
+          const divA = rankToNum(A.rank);
+          const divB = rankToNum(B.rank);
+          return divA - divB; // menor número = mejor división
+        });
+
+        // 4) Reemplazamos el skeleton con los datos reales
+        tbody.innerHTML = "";
+
+        let idx = 0;
+
+        for (const item of resultados) {
+          const d = item.data;
+          const solo = d.soloQ;
+
+          let twitchHtml = "";
+
+          if (!item.base.twitch || item.base.twitch.trim() === "") {
+            twitchHtml = `<span style="color:gray;">No tiene Twitch</span>`;
+          } else {
+            const online = await estadoTwitch(item.base.twitch);
+            twitchHtml = `
+              <a href="https://twitch.tv/${item.base.twitch}" target="_blank"
+                style="color:${online ? 'lightgreen' : 'red'};">
+                ${online ? 'ONLINE' : 'offline'}
+              </a>
+            `;
+          }
+          
+
+          // Esperar Twitch correctamente
+          const online = await estadoTwitch(item.base.twitch);
+
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${d.riotId || (item.base.gameName + "#" + item.base.tagLine)}</td>
+            <td>${solo ? solo.tier + " " + solo.rank : "-"}</td>
+            <td>${solo ? solo.lp : "-"}</td>
+            <td>${solo ? solo.wins + "/" + solo.losses : "-/-"}</td>
+            <td>${solo ? calcWinrate(solo.wins, solo.losses) + "%" : "-"}</td>
+            <td>${twitchHtml}</td>
+          `;
+
+          tbody.appendChild(tr);
+
+          idx++;
+        }
+
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="7">Error al cargar participantes.</td></tr>`;
+      }
+    }
+
+    async function obtenerTwitchToken() {
+      const res = await fetch(`https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&grant_type=client_credentials`, {
+        method: "POST"
+      });
+      
+      const data = await res.json();
+      TWITCH_TOKEN = data.access_token;
+    }
+
+    window.onload = () => {
+      cargarParticipantes();      // carga inicial de la tabla
+      updateCountdown();          // inicia el reloj
+      setInterval(updateCountdown, 1000); // actualiza cada segundo
+    };
+  </script>
+
+</body>
+</html>
