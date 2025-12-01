@@ -79,20 +79,21 @@
       margin-bottom: 10px;
     }
 
-    #reload-btn {
-        position: absolute;
-        right: 20px;  /* lo mueve a la derecha */
-        top: 50%;
-        transform: translateY(-50%);
-        padding: 8px 14px;
+    .reload-button {
+        margin-top: 15px;
+        padding: 10px 18px;
         background: #222;
         color: #eee;
         border: 1px solid #555;
         border-radius: 6px;
         cursor: pointer;
+        font-size: 15px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto; /* lo centra */
     }
 
-    #reload-btn:hover {
+    .reload-button:hover {
         background: #333;
     }
 
@@ -103,10 +104,12 @@
     }
 
     .countdown {
-      margin-top: 20px;
-      font-size: 16px;
-      text-align: center;
-      color: #ffdf6b;
+        text-align: center;
+        margin-top: 15px;
+        color: #ccc;
+        font-size: 2.5rem;   /* Triplica el tamaño (puedes poner 3rem si quieres más) */
+        font-weight: bold;   /* Opcional: que se vea más sólido */
+        letter-spacing: 1px; /* Opcional: separación suave */
     }
 
     #tabla-participantes {
@@ -145,13 +148,7 @@
 
   <div class="container">
   <div class="left">
-    <div class="header-wrapper">
-        <img src="GaePicaro.png" class="center-img">
-
-        <button id="reload-btn" onclick="cargarParticipantes()">
-            🔄 Recargar tabla
-        </button>
-    </div>
+    <img src="GaePicaro.png" class="logo-img">
 
     <table id="tabla-participantes">
       <thead>
@@ -170,6 +167,10 @@
 
      <div id="countdown" class="countdown"></div>
 
+    <button id="reload-btn" onclick="cargarParticipantes()" class="reload-button">
+        🔄 Recargar tabla
+    </button>
+
   </div>
 
   <div class="right">
@@ -187,17 +188,15 @@
 
     // 👉 Mete aquí tu lista de participantes
     const PARTICIPANTS = [
-      { gameName: "DFM Moya",        tagLine: "DFM"    , twitch: "moya31"},
+      { gameName: "Moya12345",       tagLine: "LAS"    , twitch: "moya31"},
       { gameName: "Pktenojay",       tagLine: "LAS"    , twitch: "shaka31tv"},
-      { gameName: "Roku Roku",       tagLine: "Deuss"  , twitch: ""},      // Kenpaxhi
-      { gameName: "ClaudioTrol",     tagLine: "MEE"    , twitch: ""},      // Nikolito
-      { gameName: "Scout",           tagLine: "Night"  , twitch: ""},      // Claudio
+      { gameName: "Roku Roku",       tagLine: "Deuss"  , twitch: "kenpaxhii"},      // Kenpaxhi
+      { gameName: "ClaudioTrol",     tagLine: "MEE"    , twitch: "primo_kurama"},      // Nikolito
+      { gameName: "Scout",           tagLine: "Night"  , twitch: "claudio_mee"},      // Claudio
       { gameName: "Son Jorge",       tagLine: "Miau"   , twitch: ""},      // Jorgito
-      { gameName: "Tr4v4 Enj0y3r",   tagLine: "Meex"   , twitch: ""},      // Meex
+      { gameName: "Tr4v4 Enj0y3r",   tagLine: "Meex"   , twitch: "meeex"},      // Meex
       { gameName: "Kz42",            tagLine: "LAS"    , twitch: "imnotgaebolg"},      // Gae
-      { gameName: "Vegeta Daima",    tagLine: "miau"   , twitch: ""},       // Flipi
-      { gameName: "Kurisü",          tagLine: "LAS"    , twitch: ""},      // Flipi
-      { gameName: "xAdolin Kholin",  tagLine: "LAS"    , twitch: ""}       // Flipi
+      { gameName: "Vegeta Daima",    tagLine: "miau"   , twitch: "flyypy"}       // Flipi,
     ];
 
     // Fechas del torneo (hora Chile: -03:00)
