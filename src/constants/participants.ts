@@ -1,0 +1,11 @@
+export const PARTICIPANTS = [
+  { alias: "Moya", gameName: "Moya12345", tagLine: "LAS", twitch: "moya31" },
+  { alias: "Diego", gameName: "Pktenojay", tagLine: "LAS", twitch: "shaka31tv" },
+  { alias: "Kenpaxhi", gameName: "Roku Roku", tagLine: "Deuss", twitch: "kenpaxhii" }, // Kenpaxhi
+  { alias: "Nikolito", gameName: "ClaudioTrol", tagLine: "MEE", twitch: "primo_kurama" }, // Nikolito
+  { alias: "Claudio", gameName: "Scout", tagLine: "Night", twitch: "claudio_mee" }, // Claudio
+  { alias: "Jorgito", gameName: "Son Jorge", tagLine: "Miau", twitch: "" }, // Jorgito
+  { alias: "Meex", gameName: "Tr4v4 Enj0y3r", tagLine: "Meex", twitch: "meeex" }, // Meex
+  { alias: "Gae", gameName: "Kz42", tagLine: "LAS", twitch: "imnotgaebolg" }, // Gae
+  { alias: "Flipi", gameName: "Vegeta Daima", tagLine: "miau", twitch: "flyypy" }, // Flipi,
+]
