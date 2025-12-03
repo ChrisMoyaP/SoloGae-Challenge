@@ -8,4 +8,5 @@ export const PARTICIPANTS = [
   { alias: "Meex", gameName: "Tr4v4 Enj0y3r", tagLine: "Meex", twitch: "meeex" }, // Meex
   { alias: "Gae", gameName: "Kz42", tagLine: "LAS", twitch: "imnotgaebolg" }, // Gae
   { alias: "Flipi", gameName: "Vegeta Daima", tagLine: "miau", twitch: "flyypy" }, // Flipi,
+  { alias: "Maza", gameName: "ElNiñoMasWn", tagLine: "LAS", twitch: "" }, // Maza,
 ]
