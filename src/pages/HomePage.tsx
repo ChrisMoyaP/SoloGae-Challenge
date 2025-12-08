@@ -6,6 +6,7 @@ import ParticipantsTable from "../components/ParticipantsTable"
 import Countdown from "../components/Countdown"
 import { EVENT_END, EVENT_START } from "../constants/events"
 import type { ParticipantRow } from "../types/ParticipantsRow"
+import "./HomePage.css"
 
 const controller = new ParticipantsController()
 

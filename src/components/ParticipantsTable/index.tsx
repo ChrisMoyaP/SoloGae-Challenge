@@ -9,7 +9,8 @@ interface Props {
 }
 const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
   return (
-    <div className="participants-table-container">
+    <>
+      <div className="participants-table-container">
       <table className="participants-table">
         <thead>
           <tr>
@@ -60,6 +61,7 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
           </tbody>
         )}
       </table>
+    </div>
       {loading && (
         <div className="loading">
           Obteniendo información de Twitch y Riot...
@@ -71,7 +73,8 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
           Recargar tabla
         </button>
       )}
-    </div>
+    </>
+    
   )
 }
 
