@@ -22,6 +22,8 @@ body {
   flex-direction: column;
   align-items: center;     /*  🔥 CENTRA TODO (logo, tabla, contador)  */
   gap: 1.5rem;
+  border: none !important;
+  outline: none !important;
 }
 
 /* Columna derecha: imagen del gato */
@@ -61,4 +63,8 @@ body {
     width: 100%;
     max-width: 100%;           /* que ocupe todo el ancho disponible abajo */
   }
+}
+
+.participants-table td::before {
+  color: #cfd8dc; /* gris claro */
 }
