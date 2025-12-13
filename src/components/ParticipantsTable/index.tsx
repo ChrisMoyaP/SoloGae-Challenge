@@ -1,5 +1,6 @@
 import type { ParticipantRow } from "../../types/ParticipantsRow"
 import { calcWinrate } from "../../utils/CalcWinrate"
+import { buildOpggUrl } from "../../utils/OpGG"
 import "./styles.css"
 
 interface Props {
@@ -28,21 +29,37 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
           <tbody>
             {rows.map((item, idx) => {
               const solo = item.data.soloQ
+              const riotId =
+                item.data.riotId ??
+                `${item.base.gameName}#${item.base.tagLine}`
               return (
                 <tr key={idx}>
-                  <td>{idx + 1}</td>
-                  <td>
-                    {item.data.riotId ??
-                      `${item.base.gameName}#${item.base.tagLine}`}
+                  <td data-label="#">{idx + 1}</td>
+                  <td data-label="Riot ID">
+                    <a
+                      href={buildOpggUrl(
+                        item.base.gameName,
+                        item.base.tagLine
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        color: "#4da6ff",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {riotId}
+                    </a>
                   </td>
-                  <td>{item.base.alias}</td>
-                  <td>{solo ? `${solo.tier} ${solo.rank}` : "-"}</td>
-                  <td>{solo?.lp ?? "-"}</td>
-                  <td>{solo ? `${solo.wins}/${solo.losses}` : "-/-"}</td>
-                  <td>
+                  <td data-label="Alias">{item.base.alias}</td>
+                  <td data-label="Tier">{solo ? `${solo.tier} ${solo.rank}` : "-"}</td>
+                  <td data-label="LP">{solo?.lp ?? "-"}</td>
+                  <td data-label="W / L">{solo ? `${solo.wins}/${solo.losses}` : "-/-"}</td>
+                  <td data-label="Winrate">
                     {solo ? calcWinrate(solo.wins, solo.losses) + "%" : "-"}
                   </td>
-                  <td>
+                  <td data-label="Twitch">
                     {item.base.twitch ? (
                       <a
                         href={`https://twitch.tv/${item.base.twitch}`}
