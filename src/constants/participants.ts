@@ -1,7 +1,7 @@
 export const PARTICIPANTS = [
   { alias: "Moya", gameName: "Moya12345", tagLine: "LAS", twitch: "moya31" },
   { alias: "Diego", gameName: "Pktenojay", tagLine: "LAS", twitch: "shaka31tv" },
-  { alias: "Kenpaxhi", gameName: "Roku Roku", tagLine: "Deuss", twitch: "kenpaxhii" }, // Kenpaxhi
+  { alias: "Kenpaxhi", gameName: "Roku Roku", tagLine: "Deuss", twitch: "RETIRADO" }, // Kenpaxhi
   { alias: "Nikolito", gameName: "ClaudioTrol", tagLine: "MEE", twitch: "primo_kurama" }, // Nikolito
   { alias: "Claudio", gameName: "Scout", tagLine: "Night", twitch: "claudio_mee" }, // Claudio
   { alias: "Jorgito", gameName: "Son Jorge", tagLine: "Miau", twitch: "" }, // Jorgito
