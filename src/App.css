@@ -112,12 +112,6 @@ tr:nth-child(even) {
   margin-top: 20px;
 }
 
-.top-bar {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
 
 .reload-button {
   margin-top: 15px;
