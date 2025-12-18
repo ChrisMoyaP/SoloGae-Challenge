@@ -60,16 +60,23 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
                     {solo ? calcWinrate(solo.wins, solo.losses) + "%" : "-"}
                   </td>
                   <td data-label="Twitch">
-                    {item.base.twitch ? (
+                    {item.base.twitch === "RETIRADO" ? (
+                      <span style={{ color: "red", fontWeight: 600 }}>
+                        RETIRADO
+                      </span>
+                    ) : item.base.twitch ? (
                       <a
                         href={`https://twitch.tv/${item.base.twitch}`}
                         target="_blank"
+                        rel="noreferrer"
                         style={{ color: item.online ? "lightgreen" : "red" }}
                       >
                         {item.online ? "ONLINE" : "offline"}
                       </a>
                     ) : (
-                      <span style={{ color: "gray" }}>No tiene Twitch</span>
+                      <span style={{ color: "gray" }}>
+                        No tiene Twitch
+                      </span>
                     )}
                   </td>
                 </tr>

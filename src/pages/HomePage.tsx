@@ -14,6 +14,16 @@ export function HomePage() {
   const [rows, setRows] = useState<ParticipantRow[]>([])
   const [loading, setLoading] = useState(true)
 
+  const PRICE_PER_PLAYER = 10_000
+
+  const activePlayers = rows.filter(
+    (p) => p.base.twitch !== "RETIRADO"
+  ).length
+
+  const prize = activePlayers * PRICE_PER_PLAYER
+
+  const formatCLP = (n: number) => n.toLocaleString("es-CL")
+
   async function load() {
     setLoading(true)
     const data = await controller.getAllOrdered()
@@ -29,7 +39,18 @@ export function HomePage() {
     <>
       <div className="container">
         <div className="left">
-          <img src={GaePicaro} className="logo-img" />
+          <div className="top-bar">
+            <img src={GaePicaro} className="logo-img" />
+              <div className="prize-box">
+                <div className="prize-title">PREMIO TOTAL:</div>
+                <div className="prize-value">
+                  ${formatCLP(prize)}
+                </div>
+                <div className="prize-sub">
+                  {activePlayers} jugadores activos × ${formatCLP(PRICE_PER_PLAYER)}
+                </div>
+              </div>
+          </div>
           <ParticipantsTable rows={rows} loading={loading} onReload={load} />
           <Countdown start={EVENT_START} end={EVENT_END} />
         </div>
