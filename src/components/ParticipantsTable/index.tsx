@@ -64,7 +64,7 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
                   <td data-label="Twitch">
                     {item.base.twitch === "RETIRADO" ? (
                       <span style={{ color: "red", fontWeight: 600 }}>
-                        RETIRADO
+                        AMARICONAO KL CTM
                       </span>
                     ) : item.base.twitch ? (
                       <a
