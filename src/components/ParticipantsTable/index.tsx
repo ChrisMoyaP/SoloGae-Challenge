@@ -21,6 +21,7 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
             <th>Tier</th>
             <th>LP</th>
             <th>W/L</th>
+            <th>Games</th>
             <th>Winrate</th>
             <th>Twitch</th>
           </tr>
@@ -56,6 +57,7 @@ const ParticipantsTable = ({ rows, loading, onReload }: Props) => {
                   <td data-label="Tier">{solo ? `${solo.tier} ${solo.rank}` : "-"}</td>
                   <td data-label="LP">{solo?.lp ?? "-"}</td>
                   <td data-label="W / L">{solo ? `${solo.wins}/${solo.losses}` : "-/-"}</td>
+                  <td data-label="Total Partidas">{solo ? `${solo.wins+solo.losses}` : "-/-"}</td>
                   <td data-label="Winrate">
                     {solo ? calcWinrate(solo.wins, solo.losses) + "%" : "-"}
                   </td>
